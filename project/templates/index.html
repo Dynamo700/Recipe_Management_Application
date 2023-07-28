@@ -1,11 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
+<!-- Main page -->
     <head>
         <meta charset="UTF-8">
         <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
         <title>Recipe Central</title>
     </head>
     <body>
-        <h1>Welcome to Recipe Central!</h1>
+        <header>
+        <div class="container">
+        <h1 class="logo">Welcome to Recipe Central!</h1>
+            <strong><nav>
+                <ul class="logo">
+                    <li><a href="{{ url_for('Recipe_page') }}">Recipe_page</a></li>
+                    <li><a href="{{ url_for('add_recipe') }}">add_recipe</a></li>
+                    <li><a href="{{ url_for('remove_recipe') }}">remove_recipe</a></li>
+                </ul>
+            </nav></strong>
+            </div>
+        </header>
+
     </body>
 </html>
