@@ -1,11 +1,63 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Add recipes!</title>
-</head>
-<body>
-<h1> Add Recipes </h1>
-<p> Here you can add recipes </p>
-</body>
-</html>
+{% extends "base.html" %}
+{% from "form-macros.html" import render_field %}
+
+{% block page_title %}
+Recipe Management
+{% endblock %}
+
+{% block H1_Description %}
+Please add a recipe
+{% endblock %}
+
+{% block H1_Content %}
+Please make sure to fill all the sections in order for your recipe to be added.
+{% endblock %}
+
+{% block H2_Content %}
+
+
+
+<section>
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ form.csrf_token }}
+<div class="row">
+    <div class="col-md-6">
+        <h2>Please insert the information for recipe here.</h2>
+        <table>
+            {{ render_feild(form.recipe_name, size=20) }}
+            {{ render_feild(form.recipe_ingreidents, size=20) }}
+            {{ render_feild(form.recipe_prep, size=20) }}
+            {{ render_feild(form.recipe_image, size=20)}}
+        </table>
+    </div>
+    <table>
+        <tr class="submit">
+            <td></td>
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</div>
+    </form>
+</section>
+{% endblock %}
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <title>Add recipes!</title>-->
+<!--</head>-->
+<!--<body>-->
+<!--<h1> Add Recipes </h1>-->
+<!--<p> Here you can add recipes </p>-->
+<!--<div id="add">-->
+<!--    <p>name</p><input type="text" placeholder="" name="name"><br><br>-->
+<!--    <p>ingredients</p><input type="text" placeholder="" name="ingredients"><br><br>-->
+<!--    <p>serving instructions</p><input type="text" placeholder="" name="serving instructions"><br><br>-->
+<!--    <input type="submit">-->
+<!--</div>-->
+<!--</body>-->
+<!--</html>-->

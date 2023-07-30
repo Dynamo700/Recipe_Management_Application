@@ -1,24 +1,47 @@
-<!DOCTYPE html>
-<html lang="en">
-<!-- Main page -->
-    <head>
-        <meta charset="UTF-8">
-        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">
-        <title>Recipe Central</title>
-    </head>
-    <body>
-        <header>
-        <div class="container">
-        <h1 class="logo">Welcome to Recipe Central!</h1>
-            <strong><nav>
-                <ul class="logo">
-                    <li><a href="{{ url_for('Recipe_page') }}">Recipe_page</a></li>
-                    <li><a href="{{ url_for('add_recipe') }}">add_recipe</a></li>
-                    <li><a href="{{ url_for('remove_recipe') }}">remove_recipe</a></li>
-                </ul>
-            </nav></strong>
-            </div>
-        </header>
+{% extends "base.html" %}
 
-    </body>
-</html>
+{% block page_title %}
+Recipe central!
+{% endblock %}
+
+{% block H1_Description %}
+Welcome to the Recipe Central!
+{% endblock %}
+
+{% block H1_content %}
+Welcome to Recipe Central! Here you can view different recipes, add your own, and even delete recipes
+{% endblock %}
+
+{% block H2_Description %}
+Please select one of the options above
+{% endblock %}
+
+
+
+
+
+
+<!--<!DOCTYPE html>-->
+<!--<html lang="en">-->
+<!--&lt;!&ndash; Main page &ndash;&gt;-->
+<!--    <head>-->
+<!--        <meta charset="UTF-8">-->
+<!--        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/style.css') }}">-->
+<!--        <title>Recipe Central</title>-->
+<!--    </head>-->
+<!--    <body>-->
+<!--        <header>-->
+<!--        <div class="container">-->
+<!--        <h1 class="logo">Welcome to Recipe Central!</h1>-->
+<!--            <strong><nav>-->
+<!--                <ul class="logo">-->
+<!--                    <li><a href="{{ url_for('Recipe_page') }}">Recipe_page</a></li>-->
+<!--                    <li><a href="{{ url_for('add_recipe') }}">add_recipe</a></li>-->
+<!--                    <li><a href="{{ url_for('remove_recipe') }}">remove_recipe</a></li>-->
+<!--                </ul>-->
+<!--            </nav></strong>-->
+<!--            </div>-->
+<!--        </header>-->
+
+<!--    </body>-->
+<!--</html>-->

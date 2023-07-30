@@ -1,12 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Remove recipe</title>
-</head>
-<body>
-<h1> Remove Recipes </h1>
-<p>This is the page where you can remove recipes.</p>
-
-</body>
-</html>
+section>
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ form.csrf_token }}
+<div class="row">
+    <div class="col-md-6">
+        <h2>Please insert the name of the recipe you'd like to delete here.</h2>
+        <table>
+            {{ render_feild(form.recipe_name, size=20) }}
+        </table>
+    </div>
+    <table>
+        <tr class="submit">
+            <td></td>
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</div>
+    </form>
+</section>
