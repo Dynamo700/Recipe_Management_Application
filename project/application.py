@@ -1,7 +1,13 @@
+import os.path
+from forms import RecipeForm
 from flask import Flask, render_template, request, url_for, redirect
 import pandas as pd
+from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = "bdhejdcbe7773bdcxe34cfb00ojhdb2"
+app.config['SUBMITTED_DATA'] = os.path.join('static', 'data_dir', '')
+app.config['SUBMITTED_IMG'] = os.path.join('static', 'image_dir', '')
 
 #Home page
 @app.route('/')
@@ -14,9 +20,33 @@ def Recipe_page():
     return render_template("Recipe_page.html")
 
 #Page for adding recipes
-@app.route('/add_recipe')
+@app.route('/add_recipe', methods = ['POST', 'GET'])
 def add_recipe():
-    return render_template("add_recipe.html")
+
+    form = RecipeForm()
+    if form.validate_on_submit():
+        recipe_name = form.recipe_name.data
+        recipe_ingreidents = form.recipe_ingreidents.data
+        recipe_prep = form.recipe_prep.data
+        recipe_image = form.recipe_image.data
+        pic_filename = recipe_name.lower().replace(" ", "_") + "." + secure_filename(form.recipe_image.data.filename).split('.')[-1]
+        form.recipe_image.data.save(os.path.join(app.config['SUBMITTED_IMG'] + pic_filename))
+        df = pd.DataFrame([{'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'image': recipe_image}])
+        df.to_csv(os.path.join(app.config['SUBMITTED_DATA'] + recipe_name.lower(" ", "_") + '.csv'))
+        return redirect(url_for('hello'))
+    else:
+        return render_template('add_recipe.html', form=form)
+
+@app.route('/display_info/<name>')
+def render_information(name):
+    df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'] + name.lower(" ", "_") + '.csv'), index_col=False)
+    print(df.iloc[0]['name'])
+    return render_template('view_recipe.html', recipe=df.iloc[0])
+
+@app.route('/nametest/<name>')
+def print_name(name):
+
+    return 'Recipe name: ' % name
 
 #Page for removing recipes
 @app.route('/remove_recipe')

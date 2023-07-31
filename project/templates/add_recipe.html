@@ -13,10 +13,11 @@ Please add a recipe
 Please make sure to fill all the sections in order for your recipe to be added.
 {% endblock %}
 
+{% block H2_Description %}
+Please fill up the following form
+{% endblock %}
+
 {% block H2_Content %}
-
-
-
 <section>
     <form action="" enctype="multipart/form-data" method="post">
         {{ form.csrf_token }}
