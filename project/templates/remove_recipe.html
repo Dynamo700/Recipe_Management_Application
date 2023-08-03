@@ -1,6 +1,5 @@
 {% extends "base.html" %}
-{% from "form-macros.html" import render_field %}
-
+{% from "form-macros.html" import render_field with context %}
 {% block page_title %}
 Recipe Removal
 {% endblock %}
@@ -13,9 +12,13 @@ Recipe Removal
 
 {% block H2_Description %}
 Please type in the name of the recipe you'd like removed
+
+
+hello
 {% endblock %}
 
 {% block H2_Content %}
+
 
 <section>
     <form action="" enctype="multipart/form-data" method="post">
@@ -39,3 +42,7 @@ Please type in the name of the recipe you'd like removed
     </form>
 </section>
 {% endblock %}
+
+
+
+

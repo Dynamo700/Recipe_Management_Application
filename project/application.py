@@ -24,6 +24,7 @@ def Recipe_page():
 def add_recipe():
 
     form = RecipeForm()
+    ##remove function goes into this if
     if form.validate_on_submit():
         recipe_name = form.recipe_name.data
         recipe_ingreidents = form.recipe_ingreidents.data
@@ -32,16 +33,19 @@ def add_recipe():
         pic_filename = recipe_name.lower().replace(" ", "_") + "." + secure_filename(form.recipe_image.data.filename).split('.')[-1]
         form.recipe_image.data.save(os.path.join(app.config['SUBMITTED_IMG'] + pic_filename))
         df = pd.DataFrame([{'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'image': recipe_image}])
-        df.to_csv(os.path.join(app.config['SUBMITTED_DATA'] + recipe_name.lower(" ", "_") + '.csv'))
-        return redirect(url_for('hello'))
+        df.to_csv(os.path.join(app.config['SUBMITTED_DATA'] + recipe_name.lower() + '.csv'))
+        return render_template('Recipe_page.html')
     else:
         return render_template('add_recipe.html', form=form)
 
 @app.route('/display_info/<name>')
 def render_information(name):
-    df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'] + name.lower(" ", "_") + '.csv'), index_col=False)
+    df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'] + name.lower().replace(" ", "_") + '.csv'), index_col=False)
     print(df.iloc[0]['name'])
     return render_template('view_recipe.html', recipe=df.iloc[0])
+
+# @app.route('/input', methods = ['POST', 'GET'])
+# def information():
 
 @app.route('/nametest/<name>')
 def print_name(name):
@@ -51,7 +55,15 @@ def print_name(name):
 #Page for removing recipes
 @app.route('/remove_recipe')
 def remove_recipe():
-    return render_template("remove_recipe.html")
+    form = RecipeForm()
+    return render_template("remove_recipe.html", form=form)
+
+
+
+@app.errorhandler(404)
+def page_not_found(e):
+
+    return render_template('404.html'), 404
 
 if __name__ == '__main__':
     app.run(debug=True)

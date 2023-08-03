@@ -9,3 +9,5 @@ class RecipeForm(FlaskForm):
     recipe_prep = TextAreaField('receipe preperation instructions:', validators=[DataRequired()])
     recipe_image = FileField('Receipe picture: ', validators=[FileRequired()])
     ##Make it so it only accepts PNG, or JPG files
+
+##Make second form to delete recipes
