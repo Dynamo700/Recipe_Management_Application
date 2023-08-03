@@ -25,10 +25,10 @@ Please fill up the following form
     <div class="col-md-6">
         <h2>Please insert the information for recipe here.</h2>
         <table>
-            {{ render_feild(form.recipe_name, size=20) }}
-            {{ render_feild(form.recipe_ingreidents, size=20) }}
-            {{ render_feild(form.recipe_prep, size=20) }}
-            {{ render_feild(form.recipe_image, size=20)}}
+            {{ render_field(form.recipe_name, size=20) }}
+            {{ render_field(form.recipe_ingreidents, size=20) }}
+            {{ render_field(form.recipe_prep, size=20) }}
+            {{ render_field(form.recipe_image, size=20)}}
         </table>
     </div>
     <table>
@@ -39,9 +39,9 @@ Please fill up the following form
             </td>
         </tr>
     </table>
-</div>
+    </div>
     </form>
-</section>
+    </section>
 {% endblock %}
 
 
