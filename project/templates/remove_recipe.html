@@ -11,36 +11,38 @@ Recipe Removal
 {% endblock %}
 
 {% block H2_Description %}
-Please type in the name of the recipe you'd like removed
-
-
-hello
+Please type in the name of the recipe you'd like to remove.
 {% endblock %}
 
 {% block H2_Content %}
-
-
 <section>
-    <form action="" enctype="multipart/form-data" method="post">
+    <form action="{{ url_for('remove_recipe') }}" enctype="multipart/form-data" method="post">
         {{ form.csrf_token }}
-<div class="row">
-    <div class="col-md-6">
-        <h2>Please insert the name of the recipe you'd like to delete here.</h2>
-        <table>
-            {{ render_field(form.recipe_name, size=20) }}
-        </table>
-    </div>
-    <table>
-        <tr class="submit">
-            <td></td>
-            <td>
-                <button type="submit">Submit</button>
-            </td>
-        </tr>
-    </table>
-</div>
+        <div class="row">
+            <div class="col-md-6">
+                <h2>Please insert the name of the recipe you'd like to delete here.</h2>
+                <table>
+                    {{ render_field(form.recipe_name, size=20) }}
+                </table>
+            </div>
+            <table>
+                <tr class="submit">
+                    <td></td>
+                    <td>
+                        <button type="submit" class="btn btn-danger">Remove Recipe</button>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </form>
 </section>
+{% endblock %}
+
+{% block removal_result %}
+{% if removal_message %}
+    <h3>Removal Result:</h3>
+    <p>{{ removal_message }}</p>
+{% endif %}
 {% endblock %}
 
 

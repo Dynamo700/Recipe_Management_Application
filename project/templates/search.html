@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% from "form-macros.html" import render_field with context %}
+{% block page_title %}
+Recipe Search
+{% endblock %}
+
+{% block H1_Description %}
+{% endblock %}
+
+{% block H1_Content %}
+{% endblock %}
+
+{% block H2_Description %}
+Please fill in the name if the recipe or the ingrident of a recipe that you'd like to find
+
+{% endblock %}
+
+{% block H2_Content %}
+
+<section>
+    <form action="" enctype="multipart/form-data" method="post">
+        {{ form.csrf_token }}
+<div class="row">
+    <div class="col-md-6">
+        <h2>Please insert the name of the recipe you would like to seatch for</h2>
+        <table>
+            {{ render_feild(form.recipe_name, size=20} }}
+        </table>
+    </div>
+    <table>
+        <tr class="submit">
+            <td></td>
+            <td>
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+</div>
+    </form>
+</section>
+{% endblock %}

@@ -10,7 +10,21 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\project\static\data_dir\lime pie.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\project\static\data_dir\pie.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\project\static\data_dir\pizza.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

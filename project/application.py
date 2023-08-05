@@ -38,7 +38,7 @@ def add_recipe():
     else:
         return render_template('add_recipe.html', form=form)
 
-@app.route('/display_info/<name>')
+@app.route('/display_info/')
 def render_information(name):
     df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'] + name.lower().replace(" ", "_") + '.csv'), index_col=False)
     print(df.iloc[0]['name'])
@@ -53,12 +53,36 @@ def print_name(name):
     return 'Recipe name: ' % name
 
 #Page for removing recipes
-@app.route('/remove_recipe')
+@app.route('/remove_recipe/', methods=['POST', 'GET'])
 def remove_recipe():
     form = RecipeForm()
-    return render_template("remove_recipe.html", form=form)
+    if form.validate_on_submit():
+        recipe_name = form.recipe_name.data.lower()
+        data_dir = app.config['SUBMITTED_DATA']
+        image_dir = app.config['SUBMITTED_IMG']
+        data_filename = os.path.join(data_dir, f"{recipe_name}.csv")
+        image_filename = os.path.join(image_dir, f"{recipe_name}.jpg")
 
+        #Check if both the data and image files exist before removing
+        if os.path.exists(data_filename):
+            print(f"Data file exists: {data_filename}")
+            os.remove(data_filename)
+            if os.path.exists(image_filename):
+                print(f"Image file still exists: {image_filename}")
+                os.remove(image_filename)
+            return f"Recipe '{recipe_name}' removed!"
+        else:
+            return f"Sorry, Recipe '{recipe_name}' not found."
 
+    return render_template('remove_recipe.html', form=form)
+
+@app.route('/search', methods=['GET', 'POST'])
+def search():
+    recipe_name = request.args.get('recipe_name')
+    if not recipe_name:
+        return render_template('search.html', form=RecipeForm())
+    df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'], f"{recipe_name.lower()}.csv"))
+    return render_template('search.html', recipes=df.to_dict(orient='records'))
 
 @app.errorhandler(404)
 def page_not_found(e):

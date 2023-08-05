@@ -4,24 +4,21 @@
 Recipe Management
 {% endblock %}
 
-{% block H1_Description %}
-{% endblock %}
-
-{% block H1_Content %}
-{% endblock %}
-
 {% block H2_Description %}
 Please find the details of the recipe that you requested.
 {% endblock %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Recipe page</title>
-</head>
-<body>
-<h1> Recipes! </h1>
-<p>Here you can find all of the recipes on the site</p>
-</body>
-</html>
+{% block H2_Content %}
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <img src="{{ url_for('static', filename='image_dir/{}'.format(recipe.pic)) }}">
+    </div>
+    <div class="col-md-8">
+      <h4 class="font-weight bold mb-0">Recipe name: <span class="text-muted font-weight-normal"> {{ recipe['name'] }}</span></h4>
+      <h4 class="font-weight bold mb-0">Recipe ingredients: <span class="text-muted font-weight-normal"> {{ recipe.ingreidents }}</span></h4>
+      <h4 class="font-weight bold mb-0">Recipe prep: <span class="text-muted font-weight-normal"> {{ recipe.prep }}</span></h4>
+    </div>
+  </div>
+</div>
+{% endblock %}
