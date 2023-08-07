@@ -10,6 +10,27 @@
             </Attribute>
           </value>
         </entry>
+        <entry key="\project\static\data_dir\brisket.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\project\static\data_dir\chicken pot pie.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\project\static\data_dir\lemon meringue pie.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="\project\static\data_dir\lime pie.csv">
           <value>
             <Attribute>
@@ -25,6 +46,13 @@
           </value>
         </entry>
         <entry key="\project\static\data_dir\pizza.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="\project\static\data_dir\roast chickenf.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

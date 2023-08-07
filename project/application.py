@@ -29,10 +29,11 @@ def add_recipe():
         recipe_name = form.recipe_name.data
         recipe_ingreidents = form.recipe_ingreidents.data
         recipe_prep = form.recipe_prep.data
+        recipe_serving = form.recipe_serving.data
         recipe_image = form.recipe_image.data
         pic_filename = recipe_name.lower().replace(" ", "_") + "." + secure_filename(form.recipe_image.data.filename).split('.')[-1]
         form.recipe_image.data.save(os.path.join(app.config['SUBMITTED_IMG'] + pic_filename))
-        df = pd.DataFrame([{'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'image': recipe_image}])
+        df = pd.DataFrame([{'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'serving': recipe_serving, 'image': recipe_image}])
         df.to_csv(os.path.join(app.config['SUBMITTED_DATA'] + recipe_name.lower() + '.csv'))
         return render_template('Recipe_page.html')
     else:
