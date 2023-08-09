@@ -85,11 +85,17 @@ def search():
     form = RecipeForm()
     if form.is_submitted():
         recipe_name = form.recipe_name.data.lower()
-        print(recipe_name)
-        df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'], f"{recipe_name.lower()}.csv"))
-        print(df.iloc[0])
-        print(df.to_dict(orient='records'))
-        return render_template('search.html', recipes=df.to_dict(orient='records'), form=form)
+
+        if os.path.exists(recipe_name):
+            recipe_name = form.recipe_name.data.lower()
+            print(recipe_name)
+            df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'], f"{recipe_name.lower()}.csv"))
+            print(df.iloc[0])
+            print(df.to_dict(orient='records'))
+            return render_template('search.html', recipes=df.to_dict(orient='records'), form=form)
+        else:
+            return f"Sorry, recipe does not exist"
+
 
 
     return render_template('search.html', form=form)
