@@ -13,11 +13,11 @@ Please find the details of the recipe that you requested.
 <div class="container">
   <div class="row">
     <div class="col-md-4">
-      <img src="{{ url_for('static', filename='image_dir/{}'.format(recipe.pic)) }}">
+      <img src="{{ url_for('static', filename='image_dir/{}.jpg'.format(recipe.['name'].lower().replace() }}">
     </div>
     <div class="col-md-8">
       <h4 class="font-weight bold mb-0">Recipe name: <span class="text-muted font-weight-normal"> {{ recipe['name'] }}</span></h4>
-      <h4 class="font-weight bold mb-0">Recipe ingredients: <span class="text-muted font-weight-normal"> {{ recipe.ingreidents }}</span></h4>
+      <h4 class="font-weight bold mb-0">Recipe ingredients: <span class="text-muted font-weight-normal"> {{ recipe.ingredients }}</span></h4>
       <h4 class="font-weight bold mb-0">Recipe prep: <span class="text-muted font-weight-normal"> {{ recipe.prep }}</span>
       <h4 class="font-weight bold mb-0">Recipe serving instructions: <span class="text-muted font-weight-normal"> {{ recipe.serving }}</span></h4>
     </div>

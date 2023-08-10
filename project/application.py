@@ -15,9 +15,11 @@ def index():
     return render_template('index.html')
 
 #Recipe page
-@app.route('/Recipe_page')
-def Recipe_page():
-    return render_template("Recipe_page.html")
+@app.route('/recipe/Recipe_page/')
+def Recipe_page(recipe):
+    df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'], f"{recipe.lower().replace(' ', '_')}.csv"), index_col=False)
+    print(df.iloc[0]['name'])
+    return render_template('Recipe_page.html', recipe=df.iloc[0])
 
 #Page for adding recipes
 @app.route('/add_recipe', methods = ['POST', 'GET'])
@@ -35,7 +37,7 @@ def add_recipe():
         form.recipe_image.data.save(os.path.join(app.config['SUBMITTED_IMG'] + pic_filename))
         df = pd.DataFrame([{'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'serving': recipe_serving, 'image': recipe_image}])
         df.to_csv(os.path.join(app.config['SUBMITTED_DATA'] + recipe_name.lower() + '.csv'))
-        return render_template('Recipe_page.html')
+        return render_template('index.html')
     else:
         return render_template('add_recipe.html', form=form)
 
