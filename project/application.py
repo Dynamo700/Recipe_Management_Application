@@ -1,4 +1,5 @@
 import os.path
+from csv import writer
 from forms import RecipeForm
 from flask import Flask, render_template, request, url_for, redirect
 import pandas as pd
@@ -16,10 +17,13 @@ def index():
 
 #Recipe page
 @app.route('/recipe/Recipe_page/')
-def Recipe_page(recipe):
-    df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'], f"{recipe.lower().replace(' ', '_')}.csv"), index_col=False)
+def Recipe_page():
+    df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'], "recipes.csv"), index_col=False)
+    recipes = df.to_dict(orient='records')
+    print(recipes)
     print(df.iloc[0]['name'])
-    return render_template('Recipe_page.html', recipe=df.iloc[0])
+    print("Hello")
+    return render_template('Recipe_page.html', recipes = recipes)
 
 #Page for adding recipes
 @app.route('/add_recipe', methods = ['POST', 'GET'])
@@ -35,8 +39,21 @@ def add_recipe():
         recipe_image = form.recipe_image.data
         pic_filename = recipe_name.lower().replace(" ", "_") + "." + secure_filename(form.recipe_image.data.filename).split('.')[-1]
         form.recipe_image.data.save(os.path.join(app.config['SUBMITTED_IMG'] + pic_filename))
-        df = pd.DataFrame([{'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'serving': recipe_serving, 'image': recipe_image}])
-        df.to_csv(os.path.join(app.config['SUBMITTED_DATA'] + recipe_name.lower() + '.csv'))
+        recipe = {'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'serving': recipe_serving, 'image': recipe_image}
+        with open(os.path.join(app.config['SUBMITTED_DATA'] + 'recipes.csv'), 'a') as f_object:
+
+            # Pass this file object to csv.writer()
+            # and get a writer object
+            writer_object = writer(f_object)
+
+            # Pass the list as an argument into
+            # the writerow()
+            writer_object.writerow(recipe.values())
+
+            # Close the file object
+            f_object.close()
+        # df = pd.DataFrame([])
+        # df.to_csv(os.path.join(app.config['SUBMITTED_DATA'] + recipe_name.lower() + '.csv'))
         return render_template('index.html')
     else:
         return render_template('add_recipe.html', form=form)
@@ -91,7 +108,7 @@ def search():
         recipe_name = form.recipe_name.data.lower()
         data_dir = app.config['SUBMITTED_DATA']
         image_dir = app.config['SUBMITTED_IMG']
-        data_filename = os.path.join(data_dir, f"{recipe_name}.csv")
+        data_filename = os.path.join(data_dir, "recipes.csv")
         image_filename = os.path.join(image_dir, f"{recipe_name}.jpg")
 
         print("After submission")
@@ -100,11 +117,18 @@ def search():
             print(f"Recipe exists: {data_filename}")
             print(recipe_name)
             df = pd.read_csv(os.path.join(data_filename))
+            recipes = df.to_dict(orient= 'records')
+            recipesfound = []
+            for recipe in recipes:
+                print(recipe['name'])
+                if recipe['name'].find(recipe_name):
+                    print("found")
+                    recipesfound.insert(recipe)
             print(df.iloc[0])
             print(df.to_dict(orient='records'))
             if os.path.exists(image_filename):
                 print("Image file found!")
-            return render_template('search.html', recipes=df.to_dict(orient='records'), form=form)
+            return render_template('search.html', recipes=recipesfound, form=form)
         else:
             return f"Sorry, recipe does not exist"
 
