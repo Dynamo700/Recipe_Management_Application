@@ -52,8 +52,7 @@ def add_recipe():
 
             # Close the file object
             f_object.close()
-        # df = pd.DataFrame([])
-        # df.to_csv(os.path.join(app.config['SUBMITTED_DATA'] + recipe_name.lower() + '.csv'))
+
         return render_template('index.html')
     else:
         return render_template('add_recipe.html', form=form)
@@ -82,20 +81,27 @@ def remove_recipe():
         recipe_name = form.recipe_name.data.lower()
         data_dir = app.config['SUBMITTED_DATA']
         image_dir = app.config['SUBMITTED_IMG']
-        data_filename = os.path.join(data_dir, f"{recipe_name}.csv")
+        data_filename = os.path.join(data_dir, "recipes.csv")
         image_filename = os.path.join(image_dir, f"{recipe_name}.jpg")
 
-        #Check if both the data and image files exist before removing
-        print("After submission")
         if os.path.exists(data_filename):
-            print(f"Data file exists: {data_filename}")
-            os.remove(data_filename)
+            df = pd.read_csv(os.path.join(data_filename))
+            recipes = df.to_dict(orient= 'records')
+            i = None
+            for index, recipe in enumerate(recipes):
+                if recipe['name'] == recipe_name:
+                    i = index
+                    break
+
+        if i is not None:
+            df_updated = df.drop(i)
+            df_updated.to_csv(data_filename, index= False)
             if os.path.exists(image_filename):
                 print(f"Image file still exists: {image_filename}")
                 os.remove(image_filename)
             return f"Recipe '{recipe_name}' removed!"
         else:
-            return f"Sorry, Recipe '{recipe_name}' not found."
+            return f"Sorry, recipe does not exist"
 
     return render_template('remove_recipe.html', form=form)
 
@@ -118,17 +124,18 @@ def search():
             print(recipe_name)
             df = pd.read_csv(os.path.join(data_filename))
             recipes = df.to_dict(orient= 'records')
-            recipesfound = []
+            # recipesfound = []
+            RecipesList = []
             for recipe in recipes:
-                print(recipe['name'])
-                if recipe['name'].find(recipe_name):
+                if recipe_name.lower() in recipe['name'].lower():
                     print("found")
-                    recipesfound.insert(recipe)
+                    RecipesList.append(recipe)
+                    # recipesfound.insert(recipe)
             print(df.iloc[0])
             print(df.to_dict(orient='records'))
             if os.path.exists(image_filename):
                 print("Image file found!")
-            return render_template('search.html', recipes=recipesfound, form=form)
+            return render_template('search.html', recipes=RecipesList, form=form)
         else:
             return f"Sorry, recipe does not exist"
 
