@@ -12,6 +12,8 @@ Please find the details of the recipe that you requested.
 {% block H2_Content %}
 {%- for recipe in recipes %}
 {{ recipe }}
+
+<img src="{{ url_for('static', filename='image_dir/'+recipe.image )}}" alt="food image">
 <h2>{{ recipe.name }}</h2>
 <h2>{{ recipe.ingreidents }}</h2>
 <h2>{{ recipe.prep }}</h2>

@@ -36,10 +36,11 @@ def add_recipe():
         recipe_ingreidents = form.recipe_ingreidents.data
         recipe_prep = form.recipe_prep.data
         recipe_serving = form.recipe_serving.data
+
         recipe_image = form.recipe_image.data
         pic_filename = recipe_name.lower().replace(" ", "_") + "." + secure_filename(form.recipe_image.data.filename).split('.')[-1]
         form.recipe_image.data.save(os.path.join(app.config['SUBMITTED_IMG'] + pic_filename))
-        recipe = {'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'serving': recipe_serving, 'image': recipe_image}
+        recipe = {'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'serving': recipe_serving, 'image': pic_filename}
         with open(os.path.join(app.config['SUBMITTED_DATA'] + 'recipes.csv'), 'a') as f_object:
 
             # Pass this file object to csv.writer()
@@ -99,9 +100,9 @@ def remove_recipe():
             if os.path.exists(image_filename):
                 print(f"Image file still exists: {image_filename}")
                 os.remove(image_filename)
-            return f"Recipe '{recipe_name}' removed!"
+            return render_template('Recipe_page.html')
         else:
-            return f"Sorry, recipe does not exist"
+            return render_template('remove_recipe.html', form=form, removal_message="Sorry, recipe doesn't exist.")
 
     return render_template('remove_recipe.html', form=form)
 

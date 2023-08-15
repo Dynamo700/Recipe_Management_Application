@@ -1,3 +1,11 @@
+<script>
+    console.log("Hello")
+    {% if removal_message %}
+    window.onload=function(){
+    alert("Sorry, recipe has not been found.")}
+    {% endif %}
+</script>
+
 {% extends "base.html" %}
 {% from "form-macros.html" import render_field with context %}
 {% block page_title %}
@@ -15,6 +23,9 @@ Please type in the name of the recipe you'd like to remove.
 {% endblock %}
 
 {% block H2_Content %}
+
+
+
 <section>
     <form action="{{ url_for('remove_recipe') }}" enctype="multipart/form-data" method="post">
         {{ form.csrf_token }}
