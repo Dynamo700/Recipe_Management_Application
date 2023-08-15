@@ -1,3 +1,11 @@
+<script>
+    console.log("Hellooo")
+    {% if notfound_message %}
+    window.onload=function(){
+    alert("Sorry, recipe has not been found.")}
+    {% endif %}
+</script>
+
 {% extends "base.html" %}
 {% from "form-macros.html" import render_field with context %}
 {% block page_title %}
@@ -24,12 +32,13 @@ Please fill in the name if the recipe or the ingrident of a recipe that you'd li
 {% if recipes is defined %}
 
 {%- for recipe in recipes %}
-{{ recipe }}
+
+<img src="{{ url_for('static', filename='image_dir/'+recipe.image )}}" width="500" height="500" alt="food image">
 <h2>{{ recipe.name }}</h2>
 <h2>{{ recipe.ingreidents }}</h2>
 <h2>{{ recipe.prep }}</h2>
 <h2>{{ recipe.serving }}</h2>
-<h2>{{ recipe.image }}</h2>
+
 {%- endfor %}
 
 {% endif %}
@@ -55,5 +64,12 @@ Please fill in the name if the recipe or the ingrident of a recipe that you'd li
 </div>
     </form>
 </section>
+{% endblock %}
+
+{% block search_result %}
+{% if notfound_message %}
+    <h3>Search Result:</h3>
+    <p>{{ notfound_message }}</p>
+{% endif %}
 {% endblock %}
 

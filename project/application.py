@@ -138,7 +138,7 @@ def search():
                 print("Image file found!")
             return render_template('search.html', recipes=RecipesList, form=form)
         else:
-            return f"Sorry, recipe does not exist"
+            return render_template('search.html', form=form, notfound_message="Sorry, recipe doesn't exist")
 
 
 
