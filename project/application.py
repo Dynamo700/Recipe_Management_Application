@@ -19,11 +19,21 @@ def index():
 @app.route('/recipe/Recipe_page/')
 def Recipe_page():
     df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'], "recipes.csv"), index_col=False)
-    recipes = df.to_dict(orient='records')
-    print(recipes)
-    print(df.iloc[0]['name'])
-    print("Hello")
-    return render_template('Recipe_page.html', recipes = recipes)
+
+    if not df.empty:
+        recipes = df.to_dict(orient='records')
+        print(recipes)
+        print(df.iloc[0]['name'])
+    else:
+        recipes = []
+        print("Sorry! No recipes avaliable at this time. Please come back later! ")
+
+    print("Hello!")
+    return render_template('Recipe_page.html', recipes=recipes)
+
+validated_extentions = {'jpg'}
+def allowed_files(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in validated_extentions
 
 #Page for adding recipes
 @app.route('/add_recipe', methods = ['POST', 'GET'])
@@ -38,34 +48,26 @@ def add_recipe():
         recipe_serving = form.recipe_serving.data
 
         recipe_image = form.recipe_image.data
-        pic_filename = recipe_name.lower().replace(" ", "_") + "." + secure_filename(form.recipe_image.data.filename).split('.')[-1]
-        form.recipe_image.data.save(os.path.join(app.config['SUBMITTED_IMG'] + pic_filename))
-        recipe = {'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'serving': recipe_serving, 'image': pic_filename}
-        with open(os.path.join(app.config['SUBMITTED_DATA'] + 'recipes.csv'), 'a') as f_object:
+        if recipe_image and allowed_files(recipe_image.filename):
+            pic_filename = recipe_name.lower().replace(" ", "_") + "." + secure_filename(form.recipe_image.data.filename).split('.')[-1]
+            form.recipe_image.data.save(os.path.join(app.config['SUBMITTED_IMG'] + pic_filename))
+            recipe = {'name': recipe_name, 'ingreidents': recipe_ingreidents, 'prep': recipe_prep, 'serving': recipe_serving, 'image': pic_filename}
+            with open(os.path.join(app.config['SUBMITTED_DATA'] + 'recipes.csv'), 'a') as f_object:
 
-            # Pass this file object to csv.writer()
-            # and get a writer object
-            writer_object = writer(f_object)
+                # Pass this file object to csv.writer()
+                # and get a writer object
+                writer_object = writer(f_object)
 
-            # Pass the list as an argument into
-            # the writerow()
-            writer_object.writerow(recipe.values())
+                # Pass the list as an argument into
+                # the writerow()
+                writer_object.writerow(recipe.values())
 
-            # Close the file object
-            f_object.close()
+                # Close the file object
+                f_object.close()
 
         return render_template('index.html')
     else:
         return render_template('add_recipe.html', form=form)
-
-@app.route('/display_info/')
-def render_information(name):
-    df = pd.read_csv(os.path.join(app.config['SUBMITTED_DATA'] + name.lower().replace(" ", "_") + '.csv'), index_col=False)
-    print(df.iloc[0]['name'])
-    return render_template('view_recipe.html', recipe=df.iloc[0])
-
-# @app.route('/input', methods = ['POST', 'GET'])
-# def information():
 
 @app.route('/nametest/<name>')
 def print_name(name):
@@ -108,6 +110,7 @@ def remove_recipe():
 
 @app.route('/search', methods=['GET', 'POST'])
 def search():
+    isSearch = False;
     form = RecipeForm()
     print("Before submission")
     print(form.is_submitted())
@@ -117,26 +120,25 @@ def search():
         image_dir = app.config['SUBMITTED_IMG']
         data_filename = os.path.join(data_dir, "recipes.csv")
         image_filename = os.path.join(image_dir, f"{recipe_name}.jpg")
+        isSearch = True;
 
         print("After submission")
         if os.path.exists(data_filename):
-            # recipe_name = form.recipe_name.data.lower()
             print(f"Recipe exists: {data_filename}")
             print(recipe_name)
             df = pd.read_csv(os.path.join(data_filename))
             recipes = df.to_dict(orient= 'records')
-            # recipesfound = []
             RecipesList = []
             for recipe in recipes:
                 if recipe_name.lower() in recipe['name'].lower():
                     print("found")
                     RecipesList.append(recipe)
-                    # recipesfound.insert(recipe)
             print(df.iloc[0])
             print(df.to_dict(orient='records'))
+
             if os.path.exists(image_filename):
                 print("Image file found!")
-            return render_template('search.html', recipes=RecipesList, form=form)
+            return render_template('search.html', recipes=RecipesList, isSearch=isSearch, form=form)
         else:
             return render_template('search.html', form=form, notfound_message="Sorry, recipe doesn't exist")
 
