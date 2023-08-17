@@ -112,7 +112,8 @@ def remove_recipe():
 def search():
     isSearch = False;
     form = RecipeForm()
-    print("Before submission")
+
+
     print(form.is_submitted())
     if form.is_submitted():
         recipe_name = form.recipe_name.data.lower()
@@ -120,29 +121,32 @@ def search():
         image_dir = app.config['SUBMITTED_IMG']
         data_filename = os.path.join(data_dir, "recipes.csv")
         image_filename = os.path.join(image_dir, f"{recipe_name}.jpg")
-        isSearch = True;
+        isSearch = True
 
-        print("After submission")
+
         if os.path.exists(data_filename):
             print(f"Recipe exists: {data_filename}")
             print(recipe_name)
             df = pd.read_csv(os.path.join(data_filename))
             recipes = df.to_dict(orient= 'records')
             RecipesList = []
-            for recipe in recipes:
-                if recipe_name.lower() in recipe['name'].lower():
-                    print("found")
-                    RecipesList.append(recipe)
-            print(df.iloc[0])
-            print(df.to_dict(orient='records'))
 
-            if os.path.exists(image_filename):
-                print("Image file found!")
-            return render_template('search.html', recipes=RecipesList, isSearch=isSearch, form=form)
+            if not df.empty:
+                for recipe in recipes:
+                    if recipe_name.lower() in recipe['name'].lower():
+                        print("found")
+                        RecipesList.append(recipe)
+                print(df.iloc[0])
+                print(df.to_dict(orient='records'))
+
+                if os.path.exists(image_filename):
+                    print("Image file found!")
+                return render_template('search.html', recipes=RecipesList, isSearch=isSearch, form=form)
+            else:
+                print("The file is empty!")
+                return render_template('search.html', form=form, notfound_message="Sorry, no recipes avaliable. Please come back later.")
         else:
-            return render_template('search.html', form=form, notfound_message="Sorry, recipe doesn't exist")
-
-
+            return render_template('search.html', form=form, notfound_message="Sorry, recipe doesn't exit")
 
     return render_template('search.html', form=form)
 
